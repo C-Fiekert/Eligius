@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="eligiusPrimary">#FF5358</color>
+    <color name="eligiusPrimaryDark">#000000</color>
+    <color name="eligiusAccent">#FFFFFF</color>
 </resources>

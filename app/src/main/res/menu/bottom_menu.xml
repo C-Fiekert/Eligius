@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/portfolioListFragment"
+        android:title="Portfolios"
+        android:icon="@drawable/portfolio_icon"
+        android:iconTint="@color/white"/>
+    <item
+        android:id="@+id/aboutUsFragment"
+        android:title="About Us"
+        android:icon="@drawable/info_icon"
+        android:iconTint="@color/white"/>
+    <item
+        android:id="@+id/donateFragment"
+        android:title="Donate"
+        android:icon="@drawable/donate_icon"
+        android:iconTint="@color/white"/>
+</menu>

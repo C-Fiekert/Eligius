@@ -1,5 +1,31 @@
 <resources>
     <string name="app_name">Eligius</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about_text1">
+        Eligius is a non-profit development with
+        the goal of helping new people enter
+        the crypto space. Eligius allows users
+        to manage their cryptocurrency portfolio
+        and keep track of prices and the valuation
+        of their portfolio.
+    </string>
+    <string name="about_text2">
+        Portfolio management is a hard skill to
+        learn, but Eligius helps you keep an eye
+        on things!
+    </string>
+    <string name="about_text3">
+        Again, Eligius is a non-profit app which
+        means we host our databases with our
+        own funds. It would be greatly appreciated
+        however if you could spare us a donation
+        for the upkeep of the app!
+    </string>
+    <string name="about_text4">
+        You can donate to us by clicking the button
+        below!
+    </string>
+    <string name="donate_text1">
+        With your donation, Eligius can maintain the app and our databases which makes all of this possible!
+    </string>
 </resources>

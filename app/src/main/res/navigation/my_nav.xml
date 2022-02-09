@@ -7,17 +7,22 @@
 
     <fragment
         android:id="@+id/aboutUsFragment"
-        android:name="com.callum.eligius.AboutUsFragment"
+        android:name="com.callum.eligius.fragments.AboutUsFragment"
         android:label="fragment_about_us"
         tools:layout="@layout/fragment_about_us" />
     <fragment
         android:id="@+id/portfolioListFragment"
-        android:name="com.callum.eligius.PortfolioListFragment"
+        android:name="com.callum.eligius.fragments.PortfolioListFragment"
         android:label="fragment_portfolio_list"
         tools:layout="@layout/fragment_portfolio_list" />
     <fragment
         android:id="@+id/donateFragment"
-        android:name="com.callum.eligius.DonateFragment"
+        android:name="com.callum.eligius.fragments.DonateFragment"
         android:label="fragment_donate"
         tools:layout="@layout/fragment_donate" />
+    <fragment
+        android:id="@+id/addPortfolioFragment"
+        android:name="com.callum.eligius.AddPortfolioFragment"
+        android:label="fragment_add_portfolio"
+        tools:layout="@layout/fragment_add_portfolio" />
 </navigation>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="30dp"
+            app:srcCompat="@drawable/add_coin_card" />
+
+
+        <TextView
+            android:id="@+id/coinNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="30dp"
+            android:text="Coin 1"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <NumberPicker
+            android:id="@+id/coinSelected"
+            android:layout_width="182dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="70dp" />
+
+        <EditText
+            android:id="@+id/coinAmount"
+            android:layout_width="261dp"
+            android:layout_height="48dp"
+            android:background="@drawable/coin_amount"
+            android:elevation="30dp"
+            android:hint="Enter amount of Coins"
+            android:inputType="text"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="120dp"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

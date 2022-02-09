@@ -28,4 +28,15 @@
     <string name="donate_text1">
         With your donation, Eligius can maintain the app and our databases which makes all of this possible!
     </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="bitcoinAddress">
+        bc1qzfxgajkvjdj0agf87q4stqlrhmrqfsx6l4udj0
+    </string>
+    <string name="cardanoAddress">
+        addr1q87tylagulqr7w9zstgsr8zvunx3sqm0j8f
+        c7z699hlzr8u9vpz4tdkd4zcxagj0rupy0t9t6al
+        gs77zrsk3tsf2u5jqrlugq0
+    </string>
 </resources>

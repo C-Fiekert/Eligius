@@ -1,9 +1,11 @@
-package com.callum.eligius
+package com.callum.eligius.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.callum.eligius.R
+import com.callum.eligius.main.Main
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 import timber.log.Timber.i
@@ -21,6 +23,6 @@ class ContainerActivity : AppCompatActivity() {
 
         Timber.plant(Timber.DebugTree())
 
-        i("Placemark Activity started..")
+        i("Eligius App started..")
     }
 }

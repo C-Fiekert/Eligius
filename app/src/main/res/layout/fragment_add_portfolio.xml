@@ -29,13 +29,13 @@
         android:textColor="@color/eligiusPrimary"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/portfolioSearch"
-        app:layout_constraintStart_toEndOf="@+id/portfolioSearch"
-        app:layout_constraintTop_toTopOf="@+id/portfolioSearch"
+        app:layout_constraintBottom_toBottomOf="@+id/portfolioName"
+        app:layout_constraintStart_toEndOf="@+id/portfolioName"
+        app:layout_constraintTop_toTopOf="@+id/portfolioName"
         app:layout_constraintVertical_bias="0.473" />
 
     <EditText
-        android:id="@+id/portfolioSearch"
+        android:id="@+id/portfolioName"
         android:layout_width="176dp"
         android:layout_height="46dp"
         android:layout_marginTop="64dp"
@@ -58,7 +58,7 @@
         android:id="@+id/recyclerView2"
         android:layout_width="wrap_content"
         android:layout_height="350dp"
-        android:layout_below="@+id/portfolioSearch"
+        android:layout_below="@+id/portfolioName"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="20dp"
@@ -68,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/portfolioSearch" />
+        app:layout_constraintTop_toBottomOf="@+id/portfolioName" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newCoin"
@@ -83,9 +83,9 @@
         android:focusable="true"
         android:src="@drawable/plus_icon"
         android:tint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/portfolioSearch"
+        app:layout_constraintBottom_toBottomOf="@+id/portfolioName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/portfolioSearch"
+        app:layout_constraintTop_toTopOf="@+id/portfolioName"
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="SpeakableTextPresentCheck" />
 

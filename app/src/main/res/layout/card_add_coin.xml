@@ -41,6 +41,8 @@
             android:id="@+id/coinAmount"
             android:layout_width="261dp"
             android:layout_height="48dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="120dp"
             android:background="@drawable/coin_amount"
             android:elevation="30dp"
             android:hint="Enter amount of Coins"
@@ -50,9 +52,7 @@
             android:padding="8dp"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="120dp"/>
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

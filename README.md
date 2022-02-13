@@ -16,9 +16,4 @@ The app has several differnt types of functionality including:
 * Transitions between each page
 
 For a visual demo of the assignment feel free to view the video below:
-
-<p align="center">
-<iframe width="1264" height="711" src="https://www.youtube.com/embed/QuA6VG8Xo-4" 
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p>
+https://www.youtube.com/embed/QuA6VG8Xo-4

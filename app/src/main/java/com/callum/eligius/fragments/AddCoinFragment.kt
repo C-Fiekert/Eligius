@@ -45,6 +45,7 @@ class AddCoinFragment : Fragment() {
         if (coin != null) {
             fragBinding.coinSelected.value = coin!!.name
             fragBinding.coinAmount.text.append(coin!!.amount)
+            fragBinding.delete.visibility = View.VISIBLE
             edit = true
         }
 
@@ -95,6 +96,19 @@ class AddCoinFragment : Fragment() {
                 }
                 transaction.commit()
             }
+        }
+
+        fragBinding.delete.setOnClickListener {
+            portfolio?.coins?.remove(coin)
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
+                transaction.replace(R.id.fragmentContainer,
+                    it2
+                )
+            }
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
 
         return root;

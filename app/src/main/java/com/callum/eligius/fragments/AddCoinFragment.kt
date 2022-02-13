@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.callum.eligius.R
 import com.callum.eligius.databinding.FragmentAddCoinBinding
 import com.callum.eligius.main.Main
@@ -53,7 +54,7 @@ class AddCoinFragment : Fragment() {
 
         fragBinding.cancel.setOnClickListener {
             val transaction = parentFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
                 transaction.replace(R.id.fragmentContainer,
                     it2
@@ -67,6 +68,11 @@ class AddCoinFragment : Fragment() {
             var coinSelected = fragBinding.coinSelected.value
             var coinAmount = fragBinding.coinAmount.text.toString()
 
+            if (coinAmount.isEmpty()) {
+                Toast.makeText(activity, "Please enter a coin amount!", Toast. LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (edit) {
                 for (num in 0 until portfolio?.coins?.size!!) {
                     if (coin?.name == portfolio?.coins?.get(num)?.name) {
@@ -74,7 +80,7 @@ class AddCoinFragment : Fragment() {
                         portfolio?.coins?.get(num)?.amount = coinAmount
 
                         val transaction = manager.beginTransaction()
-                        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                         portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
                             transaction.replace(R.id.fragmentContainer,
                                 it2
@@ -88,7 +94,7 @@ class AddCoinFragment : Fragment() {
                 portfolio?.coins?.add(CoinModel(1, coinSelected, coinAmount, 200))
 
                 val transaction = manager.beginTransaction()
-                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
                     transaction.replace(R.id.fragmentContainer,
                         it2
@@ -101,7 +107,7 @@ class AddCoinFragment : Fragment() {
         fragBinding.delete.setOnClickListener {
             portfolio?.coins?.remove(coin)
             val transaction = parentFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
                 transaction.replace(R.id.fragmentContainer,
                     it2

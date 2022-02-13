@@ -45,7 +45,7 @@
             android:layout_alignStart="@+id/youOwnText"
             android:layout_alignEnd="@+id/youOwnText"
             android:layout_marginTop="0dp"
-            android:text="1.2"
+            android:text="0"
             android:textAlignment="center"
             android:textSize="15sp" />
 
@@ -70,7 +70,7 @@
             android:layout_marginStart="-9dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="-9dp"
-            android:text="€10,320"
+            android:text="€0"
             android:textAlignment="center"
             android:textSize="15sp" />
 

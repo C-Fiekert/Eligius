@@ -1,9 +1,11 @@
 package com.callum.eligius.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.callum.eligius.R
 import com.callum.eligius.databinding.FragmentAddPortfolioBinding
@@ -24,6 +26,7 @@ class AddPortfolioFragment : Fragment() {
         app = activity?.application as Main
     }
 
+    @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,23 +54,10 @@ class AddPortfolioFragment : Fragment() {
             var value = 0
             var coinCards : MutableList<CoinModel> = emptyList<CoinModel>().toMutableList()
 
-            /*val adapter = fragBinding.recyclerView2.adapter as AddCoinAdapter
-            val data = adapter.coins
-            for (num in 0 until data.size) {
-                println("Current loop: " + num)
-
-                var card = fragBinding.recyclerView2.findViewHolderForAdapterPosition(num)
-
-                var coinAmount = card?.itemView?.findViewById<EditText>(R.id.coinAmount)?.text.toString()
-                var coinSelected = card?.itemView?.findViewById<NumberPicker>(R.id.coinSelected)?.value.toString()
-
-
-                println("Loop: " + num + ", Name: " + coinSelected)
-                println("Loop: " + num + ", Amount: " + coinAmount)
-
-
-                coinCards.add(CoinModel(5, coinSelected, coinAmount, 0))
-            }*/
+            if (name.isEmpty()) {
+                Toast.makeText(activity, "Please enter a portfolio name!", Toast. LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             app.portfoliosStore.create(PortfolioModel(0, name, value, coinCards))
 

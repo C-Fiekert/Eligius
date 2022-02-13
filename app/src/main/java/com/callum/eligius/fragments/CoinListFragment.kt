@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.callum.eligius.R
 import com.callum.eligius.adapters.CoinListener
+import com.callum.eligius.adapters.PortfolioAdapter
 import com.callum.eligius.adapters.PortfolioCoinAdapter
 import com.callum.eligius.databinding.FragmentCoinListBinding
 import com.callum.eligius.main.Main
@@ -42,7 +44,7 @@ class CoinListFragment : Fragment(), CoinListener {
         fragBinding.textView3.text = portfolioName + "'s Portfolio"
 
         fragBinding.recyclerView3.layoutManager = LinearLayoutManager(activity)
-        fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins, this@CoinListFragment) }
+        fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins, null, this@CoinListFragment) }
 
         var manager = parentFragmentManager
 
@@ -61,11 +63,25 @@ class CoinListFragment : Fragment(), CoinListener {
         fragBinding.back.setOnClickListener {
             val fragment = PortfolioListFragment()
             val transaction = manager.beginTransaction()
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             transaction.replace(R.id.fragmentContainer, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }
+
+        fragBinding.portfolioSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                println("Text provided")
+                return true
+            }
+
+            override fun onQueryTextChange(text: String?): Boolean {
+                fragBinding.recyclerView3.adapter = null
+                fragBinding.recyclerView3.adapter =
+                    coinList?.let { PortfolioCoinAdapter(it.coins, text, this@CoinListFragment) }
+                return true
+            }
+        })
 
 
         return root;

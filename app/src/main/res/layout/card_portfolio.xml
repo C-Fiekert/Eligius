@@ -43,7 +43,7 @@
             android:layout_below="@+id/valueText"
             android:layout_marginTop="0dp"
             android:layout_marginStart="280dp"
-            android:text="€10,320"
+            android:text="€0"
             android:textSize="15sp" />
 
     </RelativeLayout>

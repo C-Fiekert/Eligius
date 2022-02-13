@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.callum.eligius.databinding.CardPortfolioBinding
 import com.callum.eligius.databinding.CardPortfolioCoinBinding
 import com.callum.eligius.models.CoinModel
-import com.callum.eligius.models.PortfolioModel
+import com.callum.eligius.helpers.coinList
 
 interface CoinListener {
     fun onCoinClick(coin: CoinModel)
 }
 
-class PortfolioCoinAdapter constructor(private var coins: List<CoinModel>, private val listener: CoinListener) : RecyclerView.Adapter<PortfolioCoinAdapter.MainHolder>() {
+class PortfolioCoinAdapter constructor(private var coins: List<CoinModel>, private val filterString: String?, private val listener: CoinListener) : RecyclerView.Adapter<PortfolioCoinAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardPortfolioCoinBinding
@@ -23,16 +23,36 @@ class PortfolioCoinAdapter constructor(private var coins: List<CoinModel>, priva
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val coin = coins[holder.adapterPosition]
-        holder.bind(coin, listener)
+
+        if (filterString != null) {
+            if (filterString?.let { coinList[coin.name].startsWith(filterString) }) {
+                holder.bind(coin, listener)
+            }
+        } else {
+            holder.bind(coin, listener)
+        }
     }
 
-    override fun getItemCount(): Int = coins.size
+    override fun getItemCount(): Int {
+        var temp = coins.toMutableList()
+
+        if (filterString != null) {
+            for (coin in coins) {
+                if (filterString?.let { !coinList[coin.name].startsWith(it) }) {
+                    temp.remove(coin)
+                }
+            }
+            return temp.size
+        } else {
+            return coins.size
+        }
+    }
 
     inner class MainHolder(val binding : CardPortfolioCoinBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(coin: CoinModel, listener: CoinListener) {
-            var coinNames = com.callum.eligius.helpers.coinList
-            binding.coinName.text = coinNames[coin.name.toInt()]
+            var coinNames = coinList
+            binding.coinName.text = coinNames[coin.name]
             binding.youOwn.text = coin.amount
             binding.valueAmount.text = "€" + coin.value.toString()
 

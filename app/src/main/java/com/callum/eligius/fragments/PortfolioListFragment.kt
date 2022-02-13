@@ -2,6 +2,8 @@ package com.callum.eligius.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.callum.eligius.R
@@ -32,7 +34,7 @@ class PortfolioListFragment : Fragment(), PortfolioListener {
         activity?.title = "Portfolios"
 
         fragBinding.recyclerView1.layoutManager = LinearLayoutManager(activity)
-        fragBinding.recyclerView1.adapter = PortfolioAdapter(app.portfoliosStore.findAll(), this@PortfolioListFragment)
+        fragBinding.recyclerView1.adapter = PortfolioAdapter(app.portfoliosStore.findAll(), null, this@PortfolioListFragment)
 
         var manager = parentFragmentManager
         var create = fragBinding.floatingButton
@@ -40,13 +42,27 @@ class PortfolioListFragment : Fragment(), PortfolioListener {
         create.setOnClickListener {
             val fragment = AddPortfolioFragment()
             val transaction = manager.beginTransaction()
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             transaction.replace(R.id.fragmentContainer, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }
 
-        return root;
+
+        fragBinding.portfolioSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                println("Text provided")
+                return true
+            }
+
+            override fun onQueryTextChange(text: String?): Boolean {
+                fragBinding.recyclerView1.adapter = null
+                fragBinding.recyclerView1.adapter = PortfolioAdapter(app.portfoliosStore.findAll(), text, this@PortfolioListFragment)
+                return true
+            }
+        })
+
+        return root
     }
 
 

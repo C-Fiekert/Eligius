@@ -10,7 +10,9 @@ interface PortfolioListener {
     fun onPortfolioClick(portfolio: PortfolioModel)
 }
 
-class PortfolioAdapter constructor(private var portfolios: List<PortfolioModel>, private val listener: PortfolioListener) : RecyclerView.Adapter<PortfolioAdapter.MainHolder>() {
+class PortfolioAdapter constructor(private var portfolios: List<PortfolioModel>, private val filterString: String?, private val listener: PortfolioListener) : RecyclerView.Adapter<PortfolioAdapter.MainHolder>() {
+
+    // var temp: MutableList<PortfolioModel> = emptyList<PortfolioModel>() as MutableList<PortfolioModel>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardPortfolioBinding
@@ -20,11 +22,31 @@ class PortfolioAdapter constructor(private var portfolios: List<PortfolioModel>,
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
+
         val portfolio = portfolios[holder.adapterPosition]
-        holder.bind(portfolio, listener)
+        if (filterString != null) {
+            if (filterString?.let { portfolio.name.startsWith(filterString) }) {
+                holder.bind(portfolio, listener)
+            }
+        } else {
+            holder.bind(portfolio, listener)
+        }
     }
 
-    override fun getItemCount(): Int = portfolios.size
+    override fun getItemCount(): Int {
+        var temp = portfolios.toMutableList()
+
+        if (filterString != null) {
+            for (collection in portfolios) {
+                if (filterString?.let { !collection.name.startsWith(it) }) {
+                    temp.remove(collection)
+                }
+            }
+            return temp.size
+        } else {
+            return portfolios.size
+        }
+    }
 
     inner class MainHolder(val binding : CardPortfolioBinding) : RecyclerView.ViewHolder(binding.root) {
 

@@ -4,25 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
     app:startDestination="@id/portfolioListFragment">
-
+    <activity
+        android:id="@+id/splashScreenActivity"
+        android:name="com.callum.eligius.activities.SplashScreenActivity"
+        android:label="activity_splash_screen"
+        tools:layout="@layout/activity_splash_screen" />
+    <fragment
+        android:id="@+id/addPortfolioFragment"
+        android:name="com.callum.eligius.fragments.AddPortfolioFragment"
+        android:label="fragment_add_portfolio"
+        tools:layout="@layout/fragment_add_portfolio" >
+        <action
+            android:id="@+id/action_addPortfolioFragment_to_portfolioListFragment"
+            app:destination="@id/portfolioListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/portfolioListFragment"
+        android:name="com.callum.eligius.fragments.PortfolioListFragment"
+        android:label="fragment_portfolio_list"
+        tools:layout="@layout/fragment_portfolio_list" >
+        <action
+            android:id="@+id/action_portfolioListFragment_to_addPortfolioFragment"
+            app:destination="@id/addPortfolioFragment" />
+        <action
+            android:id="@+id/action_portfolioListFragment_to_coinListFragment2"
+            app:destination="@id/coinListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCoinFragment"
+        android:name="com.callum.eligius.fragments.AddCoinFragment"
+        android:label="fragment_add_coin"
+        tools:layout="@layout/fragment_add_coin" >
+        <action
+            android:id="@+id/action_addCoinFragment_to_portfolioListFragment"
+            app:destination="@id/portfolioListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/aboutUsFragment"
         android:name="com.callum.eligius.fragments.AboutUsFragment"
         android:label="fragment_about_us"
         tools:layout="@layout/fragment_about_us" />
     <fragment
-        android:id="@+id/portfolioListFragment"
-        android:name="com.callum.eligius.fragments.PortfolioListFragment"
-        android:label="fragment_portfolio_list"
-        tools:layout="@layout/fragment_portfolio_list" />
+        android:id="@+id/coinListFragment"
+        android:name="com.callum.eligius.fragments.CoinListFragment"
+        android:label="fragment_coin_list"
+        tools:layout="@layout/fragment_coin_list" >
+        <action
+            android:id="@+id/action_coinListFragment_to_portfolioListFragment"
+            app:destination="@id/portfolioListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/donateFragment"
         android:name="com.callum.eligius.fragments.DonateFragment"
         android:label="fragment_donate"
-        tools:layout="@layout/fragment_donate" />
-    <fragment
-        android:id="@+id/addPortfolioFragment"
-        android:name="com.callum.eligius.AddPortfolioFragment"
-        android:label="fragment_add_portfolio"
-        tools:layout="@layout/fragment_add_portfolio" />
+        tools:layout="@layout/fragment_donate" >
+        <action
+            android:id="@+id/action_donateFragment_to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment" />
+    </fragment>
 </navigation>

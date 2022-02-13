@@ -1,9 +1,7 @@
 package com.callum.eligius.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.callum.eligius.R
@@ -50,6 +48,7 @@ class PortfolioListFragment : Fragment(), PortfolioListener {
 
         return root;
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

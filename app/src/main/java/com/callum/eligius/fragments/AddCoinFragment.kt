@@ -17,6 +17,8 @@ class AddCoinFragment : Fragment() {
     private var _fragBinding: FragmentAddCoinBinding? = null
     private val fragBinding get() = _fragBinding!!
     var portfolio: PortfolioModel? = null
+    var coin: CoinModel? = null
+    var edit = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +27,7 @@ class AddCoinFragment : Fragment() {
 
         arguments?.let {
             portfolio = it.getParcelable("portfolio")
+            coin = it.getParcelable("coin")
         }
     }
 
@@ -35,47 +38,20 @@ class AddCoinFragment : Fragment() {
 
         _fragBinding = FragmentAddCoinBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        activity?.title = "Add Portfolio"
+
         fragBinding.coinSelected.minValue = 0
         fragBinding.coinSelected.maxValue = 9
         fragBinding.coinSelected.displayedValues = com.callum.eligius.helpers.coinList
+        if (coin != null) {
+            fragBinding.coinSelected.value = coin!!.name
+            fragBinding.coinAmount.text.append(coin!!.amount)
+            edit = true
+        }
 
         var manager = parentFragmentManager
 
         fragBinding.cancel.setOnClickListener {
-            val fragment = PortfolioListFragment()
-            val transaction = manager.beginTransaction()
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-            transaction.replace(R.id.fragmentContainer, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-
-        fragBinding.addCoin.setOnClickListener {
-            var coinSelected = fragBinding.coinSelected.value.toString()
-            var coinAmount = fragBinding.coinAmount.text.toString()
-
-            /*val adapter = fragBinding.recyclerView2.adapter as AddCoinAdapter
-            val data = adapter.coins
-            for (num in 0 until data.size) {
-                println("Current loop: " + num)
-
-                var card = fragBinding.recyclerView2.findViewHolderForAdapterPosition(num)
-
-                var coinAmount = card?.itemView?.findViewById<EditText>(R.id.coinAmount)?.text.toString()
-                var coinSelected = card?.itemView?.findViewById<NumberPicker>(R.id.coinSelected)?.value.toString()
-
-
-                println("Loop: " + num + ", Name: " + coinSelected)
-                println("Loop: " + num + ", Amount: " + coinAmount)
-
-
-                coinCards.add(CoinModel(5, coinSelected, coinAmount, 0))
-            }*/
-
-            portfolio?.coins?.add(CoinModel(1, coinSelected, coinAmount, 200))
-
-            val transaction = manager.beginTransaction()
+            val transaction = parentFragmentManager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
             portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
                 transaction.replace(R.id.fragmentContainer,
@@ -84,6 +60,41 @@ class AddCoinFragment : Fragment() {
             }
             transaction.addToBackStack(null)
             transaction.commit()
+        }
+
+        fragBinding.addCoin.setOnClickListener {
+            var coinSelected = fragBinding.coinSelected.value
+            var coinAmount = fragBinding.coinAmount.text.toString()
+
+            if (edit) {
+                for (num in 0 until portfolio?.coins?.size!!) {
+                    if (coin?.name == portfolio?.coins?.get(num)?.name) {
+                        portfolio?.coins?.get(num)?.name = coinSelected
+                        portfolio?.coins?.get(num)?.amount = coinAmount
+
+                        val transaction = manager.beginTransaction()
+                        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
+                            transaction.replace(R.id.fragmentContainer,
+                                it2
+                            )
+                        }
+                        transaction.commit()
+                    }
+                }
+
+            } else {
+                portfolio?.coins?.add(CoinModel(1, coinSelected, coinAmount, 200))
+
+                val transaction = manager.beginTransaction()
+                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
+                    transaction.replace(R.id.fragmentContainer,
+                        it2
+                    )
+                }
+                transaction.commit()
+            }
         }
 
         return root;
@@ -98,9 +109,10 @@ class AddCoinFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(portfolio: PortfolioModel) =
+        fun newInstance(portfolio: PortfolioModel, coin: CoinModel?) =
             AddCoinFragment().apply {
                 arguments = Bundle().apply {
+                    putParcelable("coin", coin)
                     putParcelable("portfolio", portfolio)
                 }
             }

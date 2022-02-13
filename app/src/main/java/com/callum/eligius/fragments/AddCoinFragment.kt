@@ -11,12 +11,17 @@ import com.callum.eligius.databinding.FragmentAddCoinBinding
 import com.callum.eligius.main.Main
 import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import timber.log.Timber
+import java.util.*
 
 class AddCoinFragment : Fragment() {
 
     lateinit var app: Main
     private var _fragBinding: FragmentAddCoinBinding? = null
     private val fragBinding get() = _fragBinding!!
+    private lateinit var db: DatabaseReference
     var portfolio: PortfolioModel? = null
     var coin: CoinModel? = null
     var edit = false
@@ -65,6 +70,7 @@ class AddCoinFragment : Fragment() {
         }
 
         fragBinding.addCoin.setOnClickListener {
+            db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app/").reference
             var coinSelected = fragBinding.coinSelected.value
             var coinAmount = fragBinding.coinAmount.text.toString()
 
@@ -78,6 +84,7 @@ class AddCoinFragment : Fragment() {
                     if (coin?.name == portfolio?.coins?.get(num)?.name) {
                         portfolio?.coins?.get(num)?.name = coinSelected
                         portfolio?.coins?.get(num)?.amount = coinAmount
+                        db.child("Portfolios").child(portfolio?.id.toString()).setValue(portfolio).addOnCompleteListener { Timber.i("Coin added") }
 
                         val transaction = manager.beginTransaction()
                         transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
@@ -91,7 +98,9 @@ class AddCoinFragment : Fragment() {
                 }
 
             } else {
-                portfolio?.coins?.add(CoinModel(1, coinSelected, coinAmount, 200))
+                var id = UUID.randomUUID().toString()
+                portfolio?.coins?.add(CoinModel(id, coinSelected, coinAmount))
+                db.child("Portfolios").child(portfolio?.id.toString()).child("coins").child(id).setValue(CoinModel(id, coinSelected, coinAmount)).addOnCompleteListener { Timber.i("Coin added") }
 
                 val transaction = manager.beginTransaction()
                 transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
@@ -105,7 +114,16 @@ class AddCoinFragment : Fragment() {
         }
 
         fragBinding.delete.setOnClickListener {
+            db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app/").reference
             portfolio?.coins?.remove(coin)
+
+            db.child("Portfolios").child(portfolio?.id.toString()).child("coins").child(coin?.id.toString()).removeValue().addOnSuccessListener {
+                Timber.i("Deleted coin successfully")
+            }.addOnFailureListener {
+                Timber.i("Unable to delete coin")
+            }
+
+
             val transaction = parentFragmentManager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->

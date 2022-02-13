@@ -54,7 +54,7 @@ class PortfolioCoinAdapter constructor(private var coins: List<CoinModel>, priva
             var coinNames = coinList
             binding.coinName.text = coinNames[coin.name]
             binding.youOwn.text = coin.amount
-            binding.valueAmount.text = "€" + coin.value.toString()
+            // binding.valueAmount.text = "€" + coin.value.toString()
 
             binding.root.setOnClickListener { listener.onCoinClick(coin) }
         }

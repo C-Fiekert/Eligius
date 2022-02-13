@@ -11,13 +11,18 @@ import com.callum.eligius.adapters.PortfolioAdapter
 import com.callum.eligius.adapters.PortfolioListener
 import com.callum.eligius.databinding.FragmentPortfolioListBinding
 import com.callum.eligius.main.Main
+import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class PortfolioListFragment : Fragment(), PortfolioListener {
 
     lateinit var app: Main
     private var _fragBinding: FragmentPortfolioListBinding? = null
     private val fragBinding get() = _fragBinding!!
+
+    private lateinit var db: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

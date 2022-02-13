@@ -16,4 +16,5 @@ The app has several differnt types of functionality including:
 * Transitions between each page
 
 For a visual demo of the assignment feel free to view the video below:
+
 https://www.youtube.com/embed/QuA6VG8Xo-4

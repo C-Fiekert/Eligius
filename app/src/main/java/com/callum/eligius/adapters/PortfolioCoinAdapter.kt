@@ -3,14 +3,15 @@ package com.callum.eligius.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.callum.eligius.databinding.CardAddCoinBinding
 import com.callum.eligius.databinding.CardPortfolioBinding
+import com.callum.eligius.databinding.CardPortfolioCoinBinding
+import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
 
-class AddCoinAdapter(private var coins: ArrayList<Int>) : RecyclerView.Adapter<AddCoinAdapter.MainHolder>() {
+class PortfolioCoinAdapter constructor(private var coins: List<CoinModel>) : RecyclerView.Adapter<PortfolioCoinAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardAddCoinBinding
+        val binding = CardPortfolioCoinBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MainHolder(binding)
@@ -23,13 +24,13 @@ class AddCoinAdapter(private var coins: ArrayList<Int>) : RecyclerView.Adapter<A
 
     override fun getItemCount(): Int = coins.size
 
-    inner class MainHolder(val binding : CardAddCoinBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MainHolder(val binding : CardPortfolioCoinBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(coin: Int) {
-            binding.coinNumber.text = "Coin ".plus(coin.toString())
-            binding.coinSelected.minValue = 0
-            binding.coinSelected.maxValue = 9
-            binding.coinSelected.displayedValues = com.callum.eligius.helpers.coinList
+        fun bind(coin: CoinModel) {
+            var coinNames = com.callum.eligius.helpers.coinList
+            binding.coinName.text = coinNames[coin.name.toInt()]
+            binding.youOwn.text = coin.amount
+            binding.valueAmount.text = "€" + coin.value.toString()
         }
     }
 }

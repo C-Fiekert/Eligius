@@ -12,19 +12,42 @@
         android:id="@+id/cardLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/portfolio_list_item"
+        android:background="@drawable/coin_list_item"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/portfolioName"
+            android:id="@+id/coinName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="Callums Portfolio" />
+            tools:text="Bitcoin" />
+
+        <TextView
+            android:id="@+id/youOwnText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="-5dp"
+            android:text="You Own"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/youOwn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/youOwnText"
+            android:layout_alignStart="@+id/youOwnText"
+            android:layout_alignEnd="@+id/youOwnText"
+            android:layout_marginTop="0dp"
+            android:text="1.2"
+            android:textAlignment="center"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/valueText"
@@ -33,17 +56,22 @@
             android:layout_marginStart="280dp"
             android:layout_marginTop="-5dp"
             android:text="Value"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/valueAmount"
-            android:layout_width="wrap_content"
+            android:layout_width="69dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/valueText"
+            android:layout_alignStart="@+id/valueText"
+            android:layout_alignEnd="@+id/valueText"
+            android:layout_marginStart="-9dp"
             android:layout_marginTop="0dp"
-            android:layout_marginStart="280dp"
+            android:layout_marginEnd="-9dp"
             android:text="€10,320"
+            android:textAlignment="center"
             android:textSize="15sp" />
 
     </RelativeLayout>

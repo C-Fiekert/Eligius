@@ -1,27 +1,31 @@
 package com.callum.eligius.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.callum.eligius.R
-import com.callum.eligius.databinding.FragmentAddPortfolioBinding
+import com.callum.eligius.databinding.FragmentAddCoinBinding
 import com.callum.eligius.main.Main
 import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
 
-class AddPortfolioFragment : Fragment() {
+class AddCoinFragment : Fragment() {
 
     lateinit var app: Main
-    private var _fragBinding: FragmentAddPortfolioBinding? = null
+    private var _fragBinding: FragmentAddCoinBinding? = null
     private val fragBinding get() = _fragBinding!!
-    var coins = arrayListOf(1)
+    var portfolio: PortfolioModel? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as Main
+
+        arguments?.let {
+            portfolio = it.getParcelable("portfolio")
+        }
     }
 
     override fun onCreateView(
@@ -29,13 +33,14 @@ class AddPortfolioFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _fragBinding = FragmentAddPortfolioBinding.inflate(inflater, container, false)
+        _fragBinding = FragmentAddCoinBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = "Add Portfolio"
-
+        fragBinding.coinSelected.minValue = 0
+        fragBinding.coinSelected.maxValue = 9
+        fragBinding.coinSelected.displayedValues = com.callum.eligius.helpers.coinList
 
         var manager = parentFragmentManager
-
 
         fragBinding.cancel.setOnClickListener {
             val fragment = PortfolioListFragment()
@@ -46,10 +51,9 @@ class AddPortfolioFragment : Fragment() {
             transaction.commit()
         }
 
-        fragBinding.addPortfolio.setOnClickListener {
-            var name = fragBinding.portfolioName.text.toString()
-            var value = 0
-            var coinCards : MutableList<CoinModel> = emptyList<CoinModel>().toMutableList()
+        fragBinding.addCoin.setOnClickListener {
+            var coinSelected = fragBinding.coinSelected.value.toString()
+            var coinAmount = fragBinding.coinAmount.text.toString()
 
             /*val adapter = fragBinding.recyclerView2.adapter as AddCoinAdapter
             val data = adapter.coins
@@ -69,12 +73,15 @@ class AddPortfolioFragment : Fragment() {
                 coinCards.add(CoinModel(5, coinSelected, coinAmount, 0))
             }*/
 
-            app.portfoliosStore.create(PortfolioModel(0, name, value, coinCards))
+            portfolio?.coins?.add(CoinModel(1, coinSelected, coinAmount, 200))
 
-            val fragment = PortfolioListFragment()
             val transaction = manager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-            transaction.replace(R.id.fragmentContainer, fragment)
+            portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
+                transaction.replace(R.id.fragmentContainer,
+                    it2
+                )
+            }
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -91,9 +98,11 @@ class AddPortfolioFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            PortfolioListFragment().apply {
-                arguments = Bundle().apply {}
+        fun newInstance(portfolio: PortfolioModel) =
+            AddCoinFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable("portfolio", portfolio)
+                }
             }
     }
 

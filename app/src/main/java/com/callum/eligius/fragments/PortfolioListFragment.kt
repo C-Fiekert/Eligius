@@ -1,6 +1,5 @@
 package com.callum.eligius.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.callum.eligius.R
 import com.callum.eligius.adapters.PortfolioAdapter
-import com.callum.eligius.databinding.FragmentAboutUsBinding
+import com.callum.eligius.adapters.PortfolioListener
 import com.callum.eligius.databinding.FragmentPortfolioListBinding
 import com.callum.eligius.main.Main
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.callum.eligius.models.PortfolioModel
 
-class PortfolioListFragment : Fragment() {
+class PortfolioListFragment : Fragment(), PortfolioListener {
 
     lateinit var app: Main
     private var _fragBinding: FragmentPortfolioListBinding? = null
@@ -22,6 +21,7 @@ class PortfolioListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        app = activity?.application as Main
     }
 
     override fun onCreateView(
@@ -33,10 +33,10 @@ class PortfolioListFragment : Fragment() {
         val root = fragBinding.root
         activity?.title = "Portfolios"
 
+        fragBinding.recyclerView1.layoutManager = LinearLayoutManager(activity)
+        fragBinding.recyclerView1.adapter = PortfolioAdapter(app.portfoliosStore.findAll(), this@PortfolioListFragment)
 
         var manager = parentFragmentManager
-//        fragBinding.recyclerView1.layoutManager = LinearLayoutManager(activity)
-//        fragBinding.recyclerView1.adapter = PortfolioAdapter(app.portfoliosStore.findAll())
         var create = fragBinding.floatingButton
 
         create.setOnClickListener {
@@ -56,13 +56,6 @@ class PortfolioListFragment : Fragment() {
         _fragBinding = null
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        totalDonated = app.donationsStore.findAll().sumOf { it.amount }
-//        fragBinding.progressBar.progress = totalDonated
-//        fragBinding.totalSoFar.text = "$$totalDonated"
-//    }
-
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -71,4 +64,11 @@ class PortfolioListFragment : Fragment() {
             }
     }
 
+    override fun onPortfolioClick(portfolio: PortfolioModel) {
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+        transaction.replace(R.id.fragmentContainer, CoinListFragment.newInstance(portfolio))
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 }

@@ -75,7 +75,7 @@ class AddCoinFragment : Fragment() {
             var coinAmount = fragBinding.coinAmount.text.toString()
 
             if (coinAmount.isEmpty()) {
-                Toast.makeText(activity, "Please enter a coin amount!", Toast. LENGTH_SHORT).show()
+                Toast.makeText(activity, "Please enter a coin amount!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

@@ -12,7 +12,7 @@
         android:id="@+id/cardLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/portfolio_list_item"
+        android:background="@drawable/portfolio_bg"
         android:padding="16dp">
 
         <TextView
@@ -24,6 +24,7 @@
             android:layout_marginTop="10dp"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/white"
             tools:text="Callums Portfolio" />
 
         <TextView
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="280dp"
             android:layout_marginTop="-5dp"
+            android:textColor="@color/white"
             android:text="Value"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -43,6 +45,7 @@
             android:layout_below="@+id/valueText"
             android:layout_marginTop="0dp"
             android:layout_marginStart="280dp"
+            android:textColor="@color/white"
             android:text="€0"
             android:textSize="15sp" />
 

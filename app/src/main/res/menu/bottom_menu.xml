@@ -16,4 +16,9 @@
         android:title="Donate"
         android:icon="@drawable/donate_icon"
         android:iconTint="@color/white"/>
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="Settings"
+        android:icon="@drawable/settings_icon"
+        android:iconTint="@color/white"/>
 </menu>

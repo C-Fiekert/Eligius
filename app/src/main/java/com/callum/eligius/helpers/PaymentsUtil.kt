@@ -27,7 +27,6 @@ object PaymentsUtil {
         )
     )
 
-
     private val allowedCardNetworks = JSONArray(
         listOf(
             "AMEX",
@@ -90,11 +89,11 @@ object PaymentsUtil {
         }
     }
 
-    fun getPaymentDataRequest(priceCemts: Long): JSONObject? {
+    fun getPaymentDataRequest(priceCents: Long): JSONObject? {
         return try {
             baseRequest.apply {
                 put("allowedPaymentMethods", JSONArray().put(cardPaymentMethod()))
-                put("transactionInfo", getTransactionInfo(priceCemts.centsToString()))
+                put("transactionInfo", getTransactionInfo(priceCents.centsToString()))
                 put("merchantInfo", merchantInfo)
 
                 // An optional shipping address requirement is a top-level property of the

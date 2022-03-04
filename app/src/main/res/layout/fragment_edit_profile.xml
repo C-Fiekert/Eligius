@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AddPortfolioFragment">
+    tools:context=".fragments.ProfileFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -26,23 +26,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/red_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.cardview.widget.CardView
-        android:id="@+id/smallImageCard"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:id="@+id/imageCard"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="120dp"
         android:elevation="12dp"
         android:innerRadius="0dp"
         android:shape="ring"
         android:thicknessRatio="1.9"
-        app:cardCornerRadius="35dp"
+        app:cardCornerRadius="90dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/smallProfileImage"
+            android:id="@+id/profileImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
@@ -50,66 +60,83 @@
             app:srcCompat="@drawable/empty"></ImageView>
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textView"
+    <ImageButton
+        android:id="@+id/editImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="100dp"
-        android:text="Create Portfolio"
-        android:textColor="@color/eligiusPrimary"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:translationZ="90dp"
+        android:layout_marginEnd="130dp"
+        android:layout_marginBottom="120dp"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/edit_photo"
+        app:layout_constraintBottom_toBottomOf="@+id/imageCard"
+        app:layout_constraintEnd_toEndOf="@+id/imageCard" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/portfolioName2"
+        android:id="@+id/editName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="299dp"
         android:layout_height="58dp"
-        android:layout_marginTop="150dp"
-        android:hint="Enter Portfolio name"
+        android:layout_marginTop="20dp"
+        android:hint="Edit your Name"
         app:boxStrokeColor="@color/white"
         app:hintTextColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageCard"
         app:shapeAppearance="@style/Rounded">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/portfolioName"
+            android:id="@+id/editName2"
             android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageButton
-        android:id="@+id/cancel"
+    <ImageView
+        android:id="@+id/clearPortfolios"
+        android:layout_width="224dp"
+        android:layout_height="115dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/clear_portfolios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageCard" />
+
+    <ImageView
+        android:id="@+id/clearFavourites"
+        android:layout_width="224dp"
+        android:layout_height="115dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/clear_favourites"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/clearPortfolios" />
+
+    <ImageView
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="660dp"
-        android:backgroundTint="@android:color/transparent"
-        android:src="@drawable/cancel"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/addPortfolio"
+    <TextView
+        android:id="@+id/save2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="@android:color/transparent"
-        android:src="@drawable/add_portfolio"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/save"
+        app:layout_constraintEnd_toEndOf="@+id/save"
+        app:layout_constraintStart_toStartOf="@+id/save"
+        android:text="Save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

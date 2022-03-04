@@ -63,32 +63,26 @@
             app:destination="@id/aboutUsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.callum.eligius.fragments.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_portfolioListFragment"
-            app:destination="@id/portfolioListFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.callum.eligius.fragments.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
-        <action
-            android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_signUpFragment_to_portfolioListFragment"
-            app:destination="@id/portfolioListFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/settingsFragment"
         android:name="com.callum.eligius.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.callum.eligius.activities.LoginActivity"
+        android:label="LoginActivity" />
+    <activity
+        android:id="@+id/signUpActivity"
+        android:name="com.callum.eligius.activities.SignUpActivity"
+        android:label="activity_sign_up"
+        tools:layout="@layout/activity_sign_up" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.callum.eligius.fragments.ProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.callum.eligius.fragments.EditProfileFragment"
+        android:label="EditProfileFragment" />
 </navigation>

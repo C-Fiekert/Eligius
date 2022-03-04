@@ -1,5 +1,7 @@
 package com.callum.eligius.fragments
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,9 +13,16 @@ import com.callum.eligius.databinding.FragmentAddCoinBinding
 import com.callum.eligius.main.Main
 import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import timber.log.Timber
+import java.io.File
 import java.util.*
 
 class AddCoinFragment : Fragment() {
@@ -21,11 +30,15 @@ class AddCoinFragment : Fragment() {
     lateinit var app: Main
     private var _fragBinding: FragmentAddCoinBinding? = null
     private val fragBinding get() = _fragBinding!!
-    private lateinit var db: DatabaseReference
     var portfolio: PortfolioModel? = null
     var coin: CoinModel? = null
     var edit = false
 
+    private lateinit var auth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+    private lateinit var db: DatabaseReference
+    private lateinit var storage: FirebaseStorage
+    private lateinit var reference: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,18 +63,48 @@ class AddCoinFragment : Fragment() {
         fragBinding.coinSelected.displayedValues = com.callum.eligius.helpers.coinList
         if (coin != null) {
             fragBinding.coinSelected.value = coin!!.name
-            fragBinding.coinAmount.text.append(coin!!.amount)
+            fragBinding.coinAmount.text?.append(coin!!.amount)
             fragBinding.delete.visibility = View.VISIBLE
             edit = true
         }
 
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
+        user = auth.currentUser!!
+        storage = Firebase.storage
+
         var manager = parentFragmentManager
+        var profileImage = fragBinding.smallProfileImage
+
+        if (user != null) {
+            db.child("users").child(user.uid).child("id").get().addOnSuccessListener {
+
+                reference = storage.getReference("userImages/" + user.uid + ".jpg")
+                var localfile: File = File.createTempFile("tempfile", ".jpg")
+                reference.getFile(localfile).addOnSuccessListener {
+                    var bitmap: Bitmap = BitmapFactory.decodeFile(localfile.absolutePath)
+                    profileImage.setImageBitmap(bitmap)
+                    profileImage.maxHeight = 300
+                }.addOnFailureListener {
+                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        profileImage.setOnClickListener {
+            val fragment = ProfileFragment()
+            val transaction = manager.beginTransaction()
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            transaction.replace(R.id.fragment, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
 
         fragBinding.cancel.setOnClickListener {
             val transaction = parentFragmentManager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
-                transaction.replace(R.id.fragmentContainer,
+                transaction.replace(R.id.fragment,
                     it2
                 )
             }
@@ -89,7 +132,7 @@ class AddCoinFragment : Fragment() {
                         val transaction = manager.beginTransaction()
                         transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                         portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
-                            transaction.replace(R.id.fragmentContainer,
+                            transaction.replace(R.id.fragment,
                                 it2
                             )
                         }
@@ -105,7 +148,7 @@ class AddCoinFragment : Fragment() {
                 val transaction = manager.beginTransaction()
                 transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
-                    transaction.replace(R.id.fragmentContainer,
+                    transaction.replace(R.id.fragment,
                         it2
                     )
                 }
@@ -127,7 +170,7 @@ class AddCoinFragment : Fragment() {
             val transaction = parentFragmentManager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             portfolio?.let { it1 -> CoinListFragment.newInstance(it1) }?.let { it2 ->
-                transaction.replace(R.id.fragmentContainer,
+                transaction.replace(R.id.fragment,
                     it2
                 )
             }

@@ -10,12 +10,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:background="@color/eligiusPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="184dp"
+            android:layout_height="62dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/logo_transparent_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/smallImageCard"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:elevation="12dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="35dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/smallProfileImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/empty"></ImageView>
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/donateHeading1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="100dp"
             android:text="Donate to the Project!"
             android:textColor="@color/eligiusPrimary"
             android:textSize="25dp"
@@ -147,7 +191,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/donateAmount" />
+            app:layout_constraintTop_toBottomOf="@+id/donateAmount2" />
 
         <TextView
             android:id="@+id/donateEuro"
@@ -163,26 +207,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-        <EditText
-            android:id="@+id/donateAmount"
-            android:layout_width="287dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:hint="Enter your donation amount"
-            android:textColor="@color/white"
-            android:inputType="number"
-            android:textAlignment="center"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/donateAmount2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="299dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="10dp"
+            android:hint="Enter Portfolio name"
+            app:boxStrokeColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:endIconMode="clear_text"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/donateEuro" />
+            app:layout_constraintTop_toBottomOf="@+id/donateEuro"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/donateAmount"
+                android:textColor="@color/white"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/imageView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="58dp"
+            android:layout_marginTop="140dp"
             android:src="@drawable/donatetext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

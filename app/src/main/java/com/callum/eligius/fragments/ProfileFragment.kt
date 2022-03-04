@@ -1,19 +1,21 @@
 package com.callum.eligius.fragments
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.activity.result.ActivityResultLauncher
 import com.callum.eligius.R
-import com.callum.eligius.databinding.FragmentAddPortfolioBinding
+import com.callum.eligius.activities.LoginActivity
+import com.callum.eligius.databinding.FragmentDonateBinding
+import com.callum.eligius.databinding.FragmentPortfolioListBinding
+import com.callum.eligius.databinding.FragmentProfileBinding
 import com.callum.eligius.main.Main
-import com.callum.eligius.models.CoinModel
-import com.callum.eligius.models.PortfolioModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -24,11 +26,12 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import java.io.File
 
-class AddPortfolioFragment : Fragment() {
+class ProfileFragment : Fragment() {
 
     lateinit var app: Main
-    private var _fragBinding: FragmentAddPortfolioBinding? = null
+    private var _fragBinding: FragmentProfileBinding? = null
     private val fragBinding get() = _fragBinding!!
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
@@ -41,15 +44,14 @@ class AddPortfolioFragment : Fragment() {
         app = activity?.application as Main
     }
 
-    @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        _fragBinding = FragmentAddPortfolioBinding.inflate(inflater, container, false)
+        _fragBinding = FragmentProfileBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        activity?.title = "Add Portfolio"
+        activity?.title = "Portfolios"
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
@@ -57,7 +59,13 @@ class AddPortfolioFragment : Fragment() {
         storage = Firebase.storage
 
         var manager = parentFragmentManager
-        var profileImage = fragBinding.smallProfileImage
+        var profileImage = fragBinding.profileImage
+        var username = fragBinding.username
+        var numPortfolios = fragBinding.numPortfolios
+        var numFavourites = fragBinding.numFavourites
+        var editButton = fragBinding.editButton
+        var signout = fragBinding.signout
+
 
         if (user != null) {
             db.child("users").child(user.uid).child("id").get().addOnSuccessListener {
@@ -72,39 +80,18 @@ class AddPortfolioFragment : Fragment() {
                     Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
                 }
             }
-        }
-
-        profileImage.setOnClickListener {
-            val fragment = ProfileFragment()
-            val transaction = manager.beginTransaction()
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-            transaction.replace(R.id.fragment, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-
-        fragBinding.cancel.setOnClickListener {
-            val fragment = PortfolioListFragment()
-            val transaction = manager.beginTransaction()
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-            transaction.replace(R.id.fragment, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-
-        fragBinding.addPortfolio.setOnClickListener {
-            var name = fragBinding.portfolioName.text.toString()
-            var value = 0
-            var coinCards : MutableList<CoinModel> = emptyList<CoinModel>().toMutableList()
-
-            if (name.isEmpty()) {
-                Toast.makeText(activity, "Please enter a portfolio name!", Toast. LENGTH_SHORT).show()
-                return@setOnClickListener
+            db.child("users").child(user.uid).child("name").get().addOnSuccessListener {
+                var name = it.value.toString()
+                username.text = name
             }
+//            db.child("users").child(user.uid).child("portfolios").get().addOnSuccessListener {
+//                var pnumber = it.value.toString()
+//                numPortfolios.text = pnumber
+//            }
+        }
 
-            app.portfoliosStore.create(PortfolioModel(0, name, value, coinCards))
-
-            val fragment = PortfolioListFragment()
+        editButton.setOnClickListener {
+            val fragment = EditProfileFragment()
             val transaction = manager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
             transaction.replace(R.id.fragment, fragment)
@@ -112,22 +99,22 @@ class AddPortfolioFragment : Fragment() {
             transaction.commit()
         }
 
-        return root;
+        signout.setOnClickListener {
+            auth.signOut()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Inflate the layout for this fragment
+        return root
     }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _fragBinding = null
-    }
-
 
     companion object {
         @JvmStatic
         fun newInstance() =
-            PortfolioListFragment().apply {
-                arguments = Bundle().apply {}
+            ProfileFragment().apply {
+                arguments = Bundle().apply {
+                }
             }
     }
-
 }

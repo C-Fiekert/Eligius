@@ -2,9 +2,7 @@
     <string name="app_name">Eligius</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="about_text1">
-        Eligius is a non-profit development with
-        the goal of helping new people enter
-        the crypto space. Eligius allows users
+        Eligius allows users
         to manage their cryptocurrency portfolio
         and keep track of prices and the valuation
         of their portfolio.
@@ -15,7 +13,7 @@
         on things!
     </string>
     <string name="about_text3">
-        Again, Eligius is a non-profit app which
+        Eligius is a non-profit app which
         means we host our databases with our
         own funds. It would be greatly appreciated
         however if you could spare us a donation

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "368862349030",
+    "firebase_url": "https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "eligius-29624",
+    "storage_bucket": "eligius-29624.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368862349030:android:66e5db6c894df939185d27",
+        "android_client_info": {
+          "package_name": "com.callum.eligius"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368862349030-utubj90vpeulssgeckel4jc2p9lvcpqn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5ZbVtpRj_npRf6PH7_znNsob2nv9ZyPo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368862349030-utubj90vpeulssgeckel4jc2p9lvcpqn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

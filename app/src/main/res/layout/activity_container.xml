@@ -8,26 +8,6 @@
     android:background="@drawable/light"
     tools:context=".activities.ContainerActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@color/eligiusPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="184dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/logo_transparent_1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
@@ -41,15 +21,16 @@
         app:menu="@menu/bottom_menu" />
 
     <fragment
-        android:id="@+id/fragmentContainer"
+        android:id="@+id/fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="409dp"
-        android:layout_height="559dp"
+        android:layout_height="670dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:navGraph="@navigation/my_nav" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/my_nav"
+        android:orientation="horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

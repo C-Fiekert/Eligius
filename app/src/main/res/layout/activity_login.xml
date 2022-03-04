@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
     android:background="@color/eligiusPrimary"
     tools:context=".fragments.LoginFragment">
 
@@ -29,36 +30,70 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/login_input"
-        android:ems="10"
-        android:hint="Enter Email"
-        android:inputType="textEmailAddress"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+    <!--    <EditText-->
+    <!--        android:id="@+id/email"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="20dp"-->
+    <!--        android:background="@drawable/login_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="Enter Email"-->
+    <!--        android:inputType="textEmailAddress"-->
+    <!--        android:textAlignment="center"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/imageView7" />-->
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/email"
+        android:layout_width="299dp"
+        android:layout_height="58dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/login_input"
-        android:ems="10"
-        android:hint="Enter Password"
-        android:inputType="textPassword"
-        android:textAlignment="center"
+        android:hint="Enter Email"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView7"
+        app:shapeAppearance="@style/Rounded">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email2"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/password2"
+        android:layout_width="299dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="20dp"
+        android:hint="Enter Password"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        app:shapeAppearance="@style/Rounded">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -66,7 +101,7 @@
         android:src="@drawable/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password2" />
 
     <TextView
         android:id="@+id/accountText"
@@ -92,37 +127,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/accountText" />
 
-    <ImageButton
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/googleLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/google_login"
-        android:src="@drawable/google_login"
-        app:layout_constraintBottom_toBottomOf="@+id/twitterLogin"
-        app:layout_constraintEnd_toStartOf="@+id/twitterLogin"
-        app:layout_constraintTop_toTopOf="@+id/twitterLogin" />
-
-    <ImageButton
-        android:id="@+id/twitterLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/twitter_login"
-        android:src="@drawable/twitter_login"
-        app:layout_constraintBottom_toTopOf="@+id/accountText"
+        android:layout_marginStart="142dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="142dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
-
-    <ImageButton
-        android:id="@+id/githubLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:background="@drawable/github_login"
-        android:src="@drawable/github_login"
-        app:layout_constraintBottom_toBottomOf="@+id/twitterLogin"
-        app:layout_constraintStart_toEndOf="@+id/twitterLogin"
-        app:layout_constraintTop_toTopOf="@+id/twitterLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

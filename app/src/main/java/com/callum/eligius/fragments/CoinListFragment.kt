@@ -67,7 +67,7 @@ class CoinListFragment : Fragment(), CoinListener {
         fragBinding.textView3.text = portfolioName + "'s Portfolio"
 
         fragBinding.recyclerView3.layoutManager = LinearLayoutManager(activity)
-        fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, this@CoinListFragment) }
+        fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, false, this@CoinListFragment) }
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
@@ -122,6 +122,17 @@ class CoinListFragment : Fragment(), CoinListener {
             transaction.commit()
         }
 
+        fragBinding.favouritesList.setOnClickListener {
+            if (fragBinding.favouritesList.isChecked) {
+                fragBinding.recyclerView3.adapter = null
+                fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, true, this@CoinListFragment) }
+            } else {
+                fragBinding.recyclerView3.adapter = null
+                fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, false, this@CoinListFragment) }
+            }
+        }
+
+
         fragBinding.portfolioSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 println("Text provided")
@@ -130,8 +141,7 @@ class CoinListFragment : Fragment(), CoinListener {
 
             override fun onQueryTextChange(text: String?): Boolean {
                 fragBinding.recyclerView3.adapter = null
-                fragBinding.recyclerView3.adapter =
-                    coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, text, this@CoinListFragment) }
+                fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, text, false, this@CoinListFragment) }
                 return true
             }
         })

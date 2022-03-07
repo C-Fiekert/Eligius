@@ -12,7 +12,7 @@ interface CoinListener {
     fun onCoinClick(coin: CoinModel)
 }
 
-class PortfolioCoinAdapter constructor(var coins: ArrayList<CoinModel>, private val filterString: String?, private val listener: CoinListener) : RecyclerView.Adapter<PortfolioCoinAdapter.MainHolder>() {
+class PortfolioCoinAdapter constructor(var coins: ArrayList<CoinModel>, private val filterString: String?, private val favourite: Boolean, private val listener: CoinListener) : RecyclerView.Adapter<PortfolioCoinAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardPortfolioCoinBinding
@@ -24,8 +24,16 @@ class PortfolioCoinAdapter constructor(var coins: ArrayList<CoinModel>, private 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val coin = coins[holder.adapterPosition]
 
-        if (filterString != null) {
+        if (filterString != null && !favourite) {
             if (filterString?.let { coinList[coin.name].startsWith(filterString) }) {
+                holder.bind(coin, listener)
+            }
+        } else if (filterString == null && favourite) {
+            if (coin.favourited) {
+                holder.bind(coin, listener)
+            }
+        } else if (filterString != null && favourite) {
+            if (filterString?.let { coinList[coin.name].startsWith(filterString) && coin.favourited}) {
                 holder.bind(coin, listener)
             }
         } else {
@@ -36,14 +44,29 @@ class PortfolioCoinAdapter constructor(var coins: ArrayList<CoinModel>, private 
     override fun getItemCount(): Int {
         var temp = coins.toMutableList()
 
-        if (filterString != null) {
+        if (filterString != null && !favourite) {
             for (coin in coins) {
                 if (filterString?.let { !coinList[coin.name].startsWith(it) }) {
                     temp.remove(coin)
                 }
             }
             return temp.size
-        } else {
+        } else if (filterString == null && favourite) {
+            for (coin in coins) {
+                if (!coin.favourited) {
+                    temp.remove(coin)
+                }
+            }
+            return temp.size
+        } else if (filterString != null && favourite) {
+            for (coin in coins) {
+                if (filterString?.let { !coinList[coin.name].startsWith(it) } && !coin.favourited) {
+                    temp.remove(coin)
+                }
+            }
+            return temp.size
+        }
+        else {
             return coins.size
         }
     }
@@ -59,6 +82,11 @@ class PortfolioCoinAdapter constructor(var coins: ArrayList<CoinModel>, private 
             var coinNames = coinList
             binding.coinName.text = coinNames[coin.name]
             binding.youOwn.text = coin.amount
+            if (coin.favourited) {
+                binding.favourite.setImageResource(android.R.drawable.star_big_on)
+            } else {
+                binding.favourite.setImageResource(android.R.drawable.star_big_off)
+            }
             // binding.valueAmount.text = "€" + coin.value.toString()
 
             // binding.root.setOnClickListener { listener.onCoinClick(coin) }

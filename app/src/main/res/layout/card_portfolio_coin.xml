@@ -104,5 +104,13 @@
             android:text="+3%"
             android:textColor="@color/black" />
 
+        <ImageView
+            android:id="@+id/favourite"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="5dp"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@android:drawable/star_big_off" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

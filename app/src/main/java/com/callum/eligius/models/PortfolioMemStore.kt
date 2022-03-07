@@ -30,7 +30,7 @@ class PortfolioMemStore : PortfolioStore {
 
                 if (it.child("coins").exists()) {
                     it.child("coins").children.forEach {
-                        coins.add(CoinModel(it.child("id").value.toString(), it.child("name").value.toString().toInt(), it.child("amount").value.toString()))
+                        coins.add(CoinModel(it.child("id").value.toString(), it.child("name").value.toString().toInt(), it.child("amount").value.toString(), 0, it.child("favourited").value as Boolean))
                     }
                 }
                 if (findOne(portfolios, id) == null) {
@@ -43,7 +43,6 @@ class PortfolioMemStore : PortfolioStore {
     }
 
     override fun findUserPortfolios(id: String): List<PortfolioModel> {
-        // userPortfolios.clear()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app/").reference
         auth.currentUser?.let {
             db.child("users").child(it.uid).child("portfolios").get().addOnSuccessListener {
@@ -67,7 +66,6 @@ class PortfolioMemStore : PortfolioStore {
                         userPortfolios.remove(item)
                     }
                 }
-
             }
         }
 

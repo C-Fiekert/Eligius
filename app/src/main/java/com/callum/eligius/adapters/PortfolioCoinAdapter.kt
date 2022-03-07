@@ -12,7 +12,7 @@ interface CoinListener {
     fun onCoinClick(coin: CoinModel)
 }
 
-class PortfolioCoinAdapter constructor(private var coins: List<CoinModel>, private val filterString: String?, private val listener: CoinListener) : RecyclerView.Adapter<PortfolioCoinAdapter.MainHolder>() {
+class PortfolioCoinAdapter constructor(var coins: ArrayList<CoinModel>, private val filterString: String?, private val listener: CoinListener) : RecyclerView.Adapter<PortfolioCoinAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardPortfolioCoinBinding
@@ -48,6 +48,11 @@ class PortfolioCoinAdapter constructor(private var coins: List<CoinModel>, priva
         }
     }
 
+    fun removeAt(position: Int) {
+        coins.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     inner class MainHolder(val binding : CardPortfolioCoinBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(coin: CoinModel, listener: CoinListener) {
@@ -56,7 +61,7 @@ class PortfolioCoinAdapter constructor(private var coins: List<CoinModel>, priva
             binding.youOwn.text = coin.amount
             // binding.valueAmount.text = "€" + coin.value.toString()
 
-            binding.root.setOnClickListener { listener.onCoinClick(coin) }
+            // binding.root.setOnClickListener { listener.onCoinClick(coin) }
         }
     }
 }

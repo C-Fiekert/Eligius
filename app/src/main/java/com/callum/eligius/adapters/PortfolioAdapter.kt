@@ -1,7 +1,9 @@
 package com.callum.eligius.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.callum.eligius.databinding.CardPortfolioBinding
 import com.callum.eligius.models.PortfolioModel
@@ -47,6 +49,7 @@ class PortfolioAdapter constructor(private var portfolios: List<PortfolioModel>,
             return portfolios.size
         }
     }
+
 
     inner class MainHolder(val binding : CardPortfolioBinding) : RecyclerView.ViewHolder(binding.root) {
 

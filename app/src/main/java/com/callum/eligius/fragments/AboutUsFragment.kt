@@ -72,7 +72,7 @@ class AboutUsFragment : Fragment() {
                     profileImage.setImageBitmap(bitmap)
                     profileImage.maxHeight = 300
                 }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
+                    println("No profile picture")
                 }
             }
         }

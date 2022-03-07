@@ -61,8 +61,6 @@ class ProfileFragment : Fragment() {
         var manager = parentFragmentManager
         var profileImage = fragBinding.profileImage
         var username = fragBinding.username
-        var numPortfolios = fragBinding.numPortfolios
-        var numFavourites = fragBinding.numFavourites
         var editButton = fragBinding.editButton
         var signout = fragBinding.signout
 
@@ -77,7 +75,7 @@ class ProfileFragment : Fragment() {
                     profileImage.setImageBitmap(bitmap)
                     profileImage.maxHeight = 300
                 }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
+                    println("No profile picture")
                 }
             }
             db.child("users").child(user.uid).child("name").get().addOnSuccessListener {

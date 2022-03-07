@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@android:color/transparent"
     android:layout_marginBottom="8dp"
     android:elevation="24dp">
 
@@ -20,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="60dp"
             android:layout_marginTop="8dp"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -31,7 +32,7 @@
             android:id="@+id/youOwnText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="110dp"
+            android:layout_marginStart="160dp"
             android:layout_marginTop="-5dp"
             android:text="You Own"
             android:textColor="@color/white"
@@ -57,7 +58,7 @@
             android:id="@+id/valueText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="240dp"
+            android:layout_marginStart="265dp"
             android:layout_marginTop="-5dp"
             android:text="Value"
             android:textColor="@color/white"
@@ -74,9 +75,9 @@
             android:layout_marginStart="-9dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="-9dp"
-            android:textColor="@color/white"
             android:text="€0"
             android:textAlignment="center"
+            android:textColor="@color/white"
             android:textSize="15sp" />
 
         <ImageView

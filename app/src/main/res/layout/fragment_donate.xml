@@ -214,7 +214,7 @@
             android:layout_width="299dp"
             android:layout_height="58dp"
             android:layout_marginTop="10dp"
-            android:hint="Enter Portfolio name"
+            android:hint="Enter Donation amount"
             app:boxStrokeColor="@color/white"
             app:hintTextColor="@color/white"
             app:endIconMode="clear_text"

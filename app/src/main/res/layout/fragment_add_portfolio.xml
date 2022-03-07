@@ -71,8 +71,8 @@
         android:layout_height="58dp"
         android:layout_marginTop="150dp"
         android:hint="Enter Portfolio name"
-        app:boxStrokeColor="@color/white"
-        app:hintTextColor="@color/white"
+        app:boxStrokeColor="@color/black"
+        app:hintTextColor="@color/black"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +81,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/portfolioName"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

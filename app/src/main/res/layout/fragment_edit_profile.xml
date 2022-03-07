@@ -96,26 +96,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
-        android:id="@+id/clearPortfolios"
-        android:layout_width="224dp"
-        android:layout_height="115dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/clear_portfolios"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageCard" />
-
-    <ImageView
-        android:id="@+id/clearFavourites"
-        android:layout_width="224dp"
-        android:layout_height="115dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/clear_favourites"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/clearPortfolios" />
-
-    <ImageView
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

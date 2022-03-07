@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -87,7 +89,21 @@ class DonateFragment : Fragment(R.layout.fragment_donate) {
                     profileImage.setImageBitmap(bitmap)
                     profileImage.maxHeight = 300
                 }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
+                    println("No profile picture")
+                }
+            }
+            db.child("users").child(auth.currentUser!!.uid).child("darkmode").get().addOnSuccessListener {
+                var darkmode = it.value.toString()
+                val editBox = fragBinding.donateAmount2
+                val editText = fragBinding.donateAmount
+                if (darkmode == "false") {
+                    editBox.boxStrokeColor = Color.BLACK
+                    editBox.hintTextColor = ColorStateList.valueOf(Color.BLACK)
+                    editText.setTextColor(Color.BLACK)
+                } else {
+                    editBox.boxStrokeColor = Color.WHITE
+                    editBox.hintTextColor = ColorStateList.valueOf(Color.WHITE)
+                    editText.setTextColor(Color.WHITE)
                 }
             }
         }

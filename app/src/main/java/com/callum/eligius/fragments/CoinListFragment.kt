@@ -9,12 +9,16 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.callum.eligius.R
 import com.callum.eligius.adapters.CoinListener
 import com.callum.eligius.adapters.PortfolioAdapter
 import com.callum.eligius.adapters.PortfolioCoinAdapter
 import com.callum.eligius.databinding.FragmentCoinListBinding
+import com.callum.eligius.helpers.SwipeDelete
+import com.callum.eligius.helpers.SwipeEdit
 import com.callum.eligius.main.Main
 import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
@@ -26,6 +30,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import timber.log.Timber
 import java.io.File
 
 class CoinListFragment : Fragment(), CoinListener {
@@ -62,7 +67,7 @@ class CoinListFragment : Fragment(), CoinListener {
         fragBinding.textView3.text = portfolioName + "'s Portfolio"
 
         fragBinding.recyclerView3.layoutManager = LinearLayoutManager(activity)
-        fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins, null, this@CoinListFragment) }
+        fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, this@CoinListFragment) }
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
@@ -82,7 +87,7 @@ class CoinListFragment : Fragment(), CoinListener {
                     profileImage.setImageBitmap(bitmap)
                     profileImage.maxHeight = 300
                 }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
+                    println("No profile picture")
                 }
             }
         }
@@ -126,11 +131,47 @@ class CoinListFragment : Fragment(), CoinListener {
             override fun onQueryTextChange(text: String?): Boolean {
                 fragBinding.recyclerView3.adapter = null
                 fragBinding.recyclerView3.adapter =
-                    coinList?.let { PortfolioCoinAdapter(it.coins, text, this@CoinListFragment) }
+                    coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, text, this@CoinListFragment) }
                 return true
             }
         })
 
+        // Swipe to Edit
+        val swipeEditHandler = object : SwipeEdit(requireActivity()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                println(viewHolder.adapterPosition)
+                coinList?.coins?.get(viewHolder.adapterPosition)?.let { onCoinClick(it) }
+            }
+        }
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView3)
+
+        // Swipe to Delete
+        val swipeDeleteHandler = object : SwipeDelete(requireActivity()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = fragBinding.recyclerView3.adapter as PortfolioCoinAdapter
+                println(viewHolder.adapterPosition)
+
+                coinList?.coins?.get(viewHolder.adapterPosition)?.let {
+                    db.child("users").child(user.uid).child("portfolios").child(coinList?.id.toString()).child("coins").child(it.id).removeValue().addOnSuccessListener {
+                        Timber.i("Deleted coin successfully")
+                    }.addOnFailureListener {
+                        Timber.i("Unable to delete coin")
+                    }
+                }
+
+                coinList?.coins?.get(viewHolder.adapterPosition)?.let {
+                    db.child("portfolios").child(coinList?.id.toString()).child("coins").child(it.id).removeValue().addOnSuccessListener {
+                        Timber.i("Deleted coin successfully")
+                    }.addOnFailureListener {
+                        Timber.i("Unable to delete coin")
+                    }
+                }
+                adapter.removeAt(viewHolder.adapterPosition)
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView3)
 
         return root;
     }

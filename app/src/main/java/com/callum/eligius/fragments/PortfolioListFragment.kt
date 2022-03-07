@@ -4,27 +4,28 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
-import android.widget.EditText
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.callum.eligius.R
 import com.callum.eligius.adapters.PortfolioAdapter
 import com.callum.eligius.adapters.PortfolioListener
 import com.callum.eligius.databinding.FragmentPortfolioListBinding
+import com.callum.eligius.helpers.SwipeEdit
 import com.callum.eligius.main.Main
-import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import timber.log.Timber.i
 import java.io.File
 
 class PortfolioListFragment : Fragment(), PortfolioListener {
@@ -53,42 +54,43 @@ class PortfolioListFragment : Fragment(), PortfolioListener {
         val root = fragBinding.root
         activity?.title = "Portfolios"
 
-        fragBinding.recyclerView1.layoutManager = LinearLayoutManager(activity)
-        fragBinding.recyclerView1.adapter = PortfolioAdapter(app.portfoliosStore.findAll(), null, this@PortfolioListFragment)
-
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
-        user = auth.currentUser!!
         storage = Firebase.storage
+
+        val portfolios = app.portfoliosStore.findAll()
+        val userPortfolios = app.portfoliosStore.findUserPortfolios(auth.currentUser!!.uid)
+
+        fragBinding.recyclerView1.layoutManager = LinearLayoutManager(activity)
+        fragBinding.recyclerView1.adapter = PortfolioAdapter(userPortfolios, null, this@PortfolioListFragment)
+
 
         var manager = parentFragmentManager
         var create = fragBinding.floatingButton
         var profileImage = fragBinding.smallProfileImage
 
-        if (user != null) {
-            db.child("users").child(user.uid).child("id").get().addOnSuccessListener {
+        db.child("users").child(auth.currentUser!!.uid).child("id").get().addOnSuccessListener {
 
-                reference = storage.getReference("userImages/" + user.uid + ".jpg")
-                var localfile: File = File.createTempFile("tempfile", ".jpg")
-                reference.getFile(localfile).addOnSuccessListener {
-                    var bitmap: Bitmap = BitmapFactory.decodeFile(localfile.absolutePath)
-                    profileImage.setImageBitmap(bitmap)
-                    profileImage.maxHeight = 300
-                }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
-                }
+            reference = storage.getReference("userImages/" + auth.currentUser!!.uid + ".jpg")
+            var localfile: File = File.createTempFile("tempfile", ".jpg")
+            reference.getFile(localfile).addOnSuccessListener {
+                var bitmap: Bitmap = BitmapFactory.decodeFile(localfile.absolutePath)
+                profileImage.setImageBitmap(bitmap)
+                profileImage.maxHeight = 300
+            }.addOnFailureListener {
+                println("No profile picture")
             }
-            db.child("users").child(user.uid).child("darkmode").get().addOnSuccessListener {
-                var darkmode = it.value.toString()
-                val scaffold = activity?.findViewById<ConstraintLayout>(R.id.scaffold)
-                if (darkmode == "false") {
-                    if (scaffold != null) {
-                        scaffold.setBackgroundResource(R.drawable.light)
-                    }
-                } else {
-                    if (scaffold != null) {
-                        scaffold.setBackgroundResource(R.drawable.dark)
-                    }
+        }
+        db.child("users").child(auth.currentUser!!.uid).child("darkmode").get().addOnSuccessListener {
+            var darkmode = it.value.toString()
+            val scaffold = activity?.findViewById<ConstraintLayout>(R.id.scaffold)
+            if (darkmode == "false") {
+                if (scaffold != null) {
+                    scaffold.setBackgroundResource(R.drawable.light)
+                }
+            } else {
+                if (scaffold != null) {
+                    scaffold.setBackgroundResource(R.drawable.dark)
                 }
             }
         }
@@ -120,7 +122,7 @@ class PortfolioListFragment : Fragment(), PortfolioListener {
 
             override fun onQueryTextChange(text: String?): Boolean {
                 fragBinding.recyclerView1.adapter = null
-                fragBinding.recyclerView1.adapter = PortfolioAdapter(app.portfoliosStore.findAll(), text, this@PortfolioListFragment)
+                fragBinding.recyclerView1.adapter = PortfolioAdapter(app.portfoliosStore.findUserPortfolios(auth.currentUser!!.uid), text, this@PortfolioListFragment)
                 return true
             }
         })

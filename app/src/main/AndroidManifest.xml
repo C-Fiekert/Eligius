@@ -3,6 +3,7 @@
     package="com.callum.eligius">
 
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".main.Main"

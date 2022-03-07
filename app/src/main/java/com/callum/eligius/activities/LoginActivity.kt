@@ -73,14 +73,12 @@ class LoginActivity : AppCompatActivity() {
         storage = Firebase.storage
 
 
-        Handler().postDelayed({
-            if (auth.currentUser != null){
-                val launcherIntent = Intent(this, ContainerActivity::class.java)
-                startActivityForResult(launcherIntent,0)
-            } else {
-                com.github.ajalt.timberkt.Timber.i { "User must log in" }
-            }
-        }, 0)
+//        if (auth.currentUser != null){
+//            val launcherIntent = Intent(this, ContainerActivity::class.java)
+//            startActivityForResult(launcherIntent,0)
+//        } else {
+//            com.github.ajalt.timberkt.Timber.i { "User must log in" }
+//        }
 
 
         login.setOnClickListener {

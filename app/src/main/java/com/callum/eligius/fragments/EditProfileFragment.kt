@@ -2,8 +2,10 @@ package com.callum.eligius.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -76,8 +78,6 @@ class EditProfileFragment : Fragment() {
         profileImage = fragBinding.profileImage
         var editImage = fragBinding.editImage
         editName = fragBinding.editName2
-        var clearPortfolios = fragBinding.clearPortfolios
-        var clearFavourites = fragBinding.clearFavourites
 
         if (user != null) {
             db.child("users").child(user.uid).child("id").get().addOnSuccessListener {
@@ -89,12 +89,26 @@ class EditProfileFragment : Fragment() {
                     profileImage.setImageBitmap(bitmap)
                     profileImage.maxHeight = 300
                 }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
+                    println("No profile picture")
                 }
             }
             db.child("users").child(user.uid).child("name").get().addOnSuccessListener {
                 var name = it.value.toString()
                 editName.setText(name)
+            }
+            db.child("users").child(auth.currentUser!!.uid).child("darkmode").get().addOnSuccessListener {
+                var darkmode = it.value.toString()
+                val editBox = fragBinding.editName
+                val editText = fragBinding.editName2
+                if (darkmode == "false") {
+                    editBox.boxStrokeColor = Color.BLACK
+                    editBox.hintTextColor = ColorStateList.valueOf(Color.BLACK)
+                    editText.setTextColor(Color.BLACK)
+                } else {
+                    editBox.boxStrokeColor = Color.WHITE
+                    editBox.hintTextColor = ColorStateList.valueOf(Color.WHITE)
+                    editText.setTextColor(Color.WHITE)
+                }
             }
         }
 
@@ -149,7 +163,8 @@ class EditProfileFragment : Fragment() {
 
         var pfp = profileRef.toString()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
-        db.child("users").child(id).setValue(UserModel(id, name, pfp))
+        db.child("users").child(id).child("name").setValue(name)
+        db.child("users").child(id).child("imagesRef").setValue(pfp)
     }
 
     private fun registerImagePickerCallback() {

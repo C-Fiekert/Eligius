@@ -61,26 +61,6 @@
         app:layout_constraintTop_toBottomOf="@+id/imageCard" />
 
     <ImageView
-        android:id="@+id/imageView20"
-        android:layout_width="224dp"
-        android:layout_height="115dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/profile_box"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView21" />
-
-    <ImageView
-        android:id="@+id/imageView21"
-        android:layout_width="224dp"
-        android:layout_height="115dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/profile_box"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageCard" />
-
-    <ImageView
         android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -130,20 +110,6 @@
         android:text="Name" />
 
     <TextView
-        android:id="@+id/numPortfolios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="50dp"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView21"
-        app:layout_constraintEnd_toEndOf="@+id/imageView21"
-        app:layout_constraintStart_toStartOf="@+id/imageView21"
-        android:text="No. of Portfolios: 0" />
-
-    <TextView
         android:id="@+id/signoutText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -157,19 +123,5 @@
         app:layout_constraintStart_toStartOf="@+id/signout"
         app:layout_constraintTop_toTopOf="@+id/signout"
         android:text="Sign-Out" />
-
-    <TextView
-        android:id="@+id/numFavourites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="50dp"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView20"
-        app:layout_constraintEnd_toEndOf="@+id/imageView20"
-        app:layout_constraintStart_toStartOf="@+id/imageView20"
-        android:text="Favourite Cryptos: 0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

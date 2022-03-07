@@ -81,7 +81,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun signup(name: String, email: String, password: String){
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
-                storeUser(auth.currentUser?.uid!!, name, email)
+                storeUser(auth.currentUser?.uid!!, name)
 
                 val launcherIntent = Intent(this, ContainerActivity::class.java)
                 startActivityForResult(launcherIntent,0)
@@ -92,7 +92,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun storeUser(id: String, name: String, email: String){
+    private fun storeUser(id: String, name: String){
         var storageRef = storage.reference
         var imagesRef: StorageReference?
 
@@ -100,6 +100,6 @@ class SignUpActivity : AppCompatActivity() {
 
         var pfp = imagesRef.toString()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
-        db.child("users").child(id).setValue(UserModel(id, name, pfp))
+        db.child("users").child(id).setValue(UserModel(id, name, pfp, "false"))
     }
 }

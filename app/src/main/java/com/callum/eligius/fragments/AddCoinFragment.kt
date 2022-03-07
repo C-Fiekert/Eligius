@@ -1,7 +1,9 @@
 package com.callum.eligius.fragments
 
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -86,7 +88,21 @@ class AddCoinFragment : Fragment() {
                     profileImage.setImageBitmap(bitmap)
                     profileImage.maxHeight = 300
                 }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
+                    println("No profile picture")
+                }
+            }
+            db.child("users").child(auth.currentUser!!.uid).child("darkmode").get().addOnSuccessListener {
+                var darkmode = it.value.toString()
+                val editBox = fragBinding.coinAmount2
+                val editText = fragBinding.coinAmount
+                if (darkmode == "false") {
+                    editBox.boxStrokeColor = Color.BLACK
+                    editBox.hintTextColor = ColorStateList.valueOf(Color.BLACK)
+                    editText.setTextColor(Color.BLACK)
+                } else {
+                    editBox.boxStrokeColor = Color.WHITE
+                    editBox.hintTextColor = ColorStateList.valueOf(Color.WHITE)
+                    editText.setTextColor(Color.WHITE)
                 }
             }
         }
@@ -127,7 +143,23 @@ class AddCoinFragment : Fragment() {
                     if (coin?.name == portfolio?.coins?.get(num)?.name) {
                         portfolio?.coins?.get(num)?.name = coinSelected
                         portfolio?.coins?.get(num)?.amount = coinAmount
-                        db.child("Portfolios").child(portfolio?.id.toString()).setValue(portfolio).addOnCompleteListener { Timber.i("Coin added") }
+                        portfolio?.coins?.get(num)?.id?.let { it1 ->
+                            db.child("users").child(user.uid).child("portfolios").child(portfolio?.id.toString()).child("coins").child(it1).child("name").setValue(coinSelected).addOnCompleteListener {
+                                Timber.i("Coin added")
+                            }
+                            db.child("users").child(user.uid).child("portfolios").child(portfolio?.id.toString()).child("coins").child(it1).child("amount").setValue(coinAmount).addOnCompleteListener {
+                                Timber.i("Coin added")
+                            }
+                        }
+
+                        portfolio?.coins?.get(num)?.id?.let { it1 ->
+                            db.child("portfolios").child(portfolio?.id.toString()).child("coins").child(it1).child("name").setValue(coinSelected).addOnCompleteListener {
+                                Timber.i("Coin added")
+                            }
+                            db.child("portfolios").child(portfolio?.id.toString()).child("coins").child(it1).child("amount").setValue(coinAmount).addOnCompleteListener {
+                                Timber.i("Coin added")
+                            }
+                        }
 
                         val transaction = manager.beginTransaction()
                         transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
@@ -143,7 +175,8 @@ class AddCoinFragment : Fragment() {
             } else {
                 var id = UUID.randomUUID().toString()
                 portfolio?.coins?.add(CoinModel(id, coinSelected, coinAmount))
-                db.child("Portfolios").child(portfolio?.id.toString()).child("coins").child(id).setValue(CoinModel(id, coinSelected, coinAmount)).addOnCompleteListener { Timber.i("Coin added") }
+                db.child("users").child(user.uid).child("portfolios").child(portfolio?.id.toString()).child("coins").child(id).setValue(CoinModel(id, coinSelected, coinAmount)).addOnCompleteListener { Timber.i("Coin added") }
+                db.child("portfolios").child(portfolio!!.id).child("coins").child(id).setValue(CoinModel(id, coinSelected, coinAmount)).addOnCompleteListener { Timber.i("Coin added") }
 
                 val transaction = manager.beginTransaction()
                 transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
@@ -160,7 +193,13 @@ class AddCoinFragment : Fragment() {
             db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app/").reference
             portfolio?.coins?.remove(coin)
 
-            db.child("Portfolios").child(portfolio?.id.toString()).child("coins").child(coin?.id.toString()).removeValue().addOnSuccessListener {
+            db.child("users").child(user.uid).child("portfolios").child(portfolio?.id.toString()).child("coins").child(coin?.id.toString()).removeValue().addOnSuccessListener {
+                Timber.i("Deleted coin successfully")
+            }.addOnFailureListener {
+                Timber.i("Unable to delete coin")
+            }
+
+            db.child("portfolios").child(portfolio?.id.toString()).child("coins").child(coin?.id.toString()).removeValue().addOnSuccessListener {
                 Timber.i("Deleted coin successfully")
             }.addOnFailureListener {
                 Timber.i("Unable to delete coin")

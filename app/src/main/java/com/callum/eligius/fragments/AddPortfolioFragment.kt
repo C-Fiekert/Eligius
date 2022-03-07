@@ -1,13 +1,16 @@
 package com.callum.eligius.fragments
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.callum.eligius.R
 import com.callum.eligius.databinding.FragmentAddPortfolioBinding
@@ -23,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import java.io.File
+import java.util.*
 
 class AddPortfolioFragment : Fragment() {
 
@@ -69,7 +73,21 @@ class AddPortfolioFragment : Fragment() {
                     profileImage.setImageBitmap(bitmap)
                     profileImage.maxHeight = 300
                 }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Could not load image", Toast. LENGTH_SHORT).show()
+                    println("No profile picture")
+                }
+            }
+            db.child("users").child(auth.currentUser!!.uid).child("darkmode").get().addOnSuccessListener {
+                var darkmode = it.value.toString()
+                val editBox = fragBinding.portfolioName2
+                val editText = fragBinding.portfolioName
+                if (darkmode == "false") {
+                    editBox.boxStrokeColor = Color.BLACK
+                    editBox.hintTextColor = ColorStateList.valueOf(Color.BLACK)
+                    editText.setTextColor(Color.BLACK)
+                } else {
+                    editBox.boxStrokeColor = Color.WHITE
+                    editBox.hintTextColor = ColorStateList.valueOf(Color.WHITE)
+                    editText.setTextColor(Color.WHITE)
                 }
             }
         }
@@ -93,6 +111,7 @@ class AddPortfolioFragment : Fragment() {
         }
 
         fragBinding.addPortfolio.setOnClickListener {
+            val newID = UUID.randomUUID().toString()
             var name = fragBinding.portfolioName.text.toString()
             var value = 0
             var coinCards : MutableList<CoinModel> = emptyList<CoinModel>().toMutableList()
@@ -102,7 +121,7 @@ class AddPortfolioFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            app.portfoliosStore.create(PortfolioModel(0, name, value, coinCards))
+            app.portfoliosStore.create(PortfolioModel(newID, name, value, coinCards))
 
             val fragment = PortfolioListFragment()
             val transaction = manager.beginTransaction()

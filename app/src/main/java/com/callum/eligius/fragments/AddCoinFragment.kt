@@ -5,16 +5,22 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import com.callum.eligius.R
 import com.callum.eligius.databinding.FragmentAddCoinBinding
 import com.callum.eligius.main.Main
 import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
+import com.callum.eligius.models.ResponseModel
+import com.callum.eligius.models.ResponseModelFactory
+import com.callum.eligius.repository.Repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -32,6 +38,7 @@ class AddCoinFragment : Fragment() {
     lateinit var app: Main
     private var _fragBinding: FragmentAddCoinBinding? = null
     private val fragBinding get() = _fragBinding!!
+    private lateinit var responseModel: ResponseModel
     var portfolio: PortfolioModel? = null
     var coin: CoinModel? = null
     var edit = false
@@ -59,6 +66,26 @@ class AddCoinFragment : Fragment() {
 
         _fragBinding = FragmentAddCoinBinding.inflate(inflater, container, false)
         val root = fragBinding.root
+
+
+        val repository = Repository()
+        val responseModelFactory = ResponseModelFactory(repository)
+        responseModel = ViewModelProvider(this, responseModelFactory).get(ResponseModel::class.java)
+        responseModel.getBitcoin("bitcoin", "usd")
+        responseModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                Log.d("Main", response.body().toString())
+                Log.d("Main", response.code().toString())
+                Log.d("Main", response.headers().toString())
+                println(response.code().toString())
+            } else {
+                Log.d("Main", response.errorBody().toString())
+                Log.d("Main", response.code().toString())
+                println(response.code().toString())
+                println("Failed")
+            }
+        })
+
 
         fragBinding.coinSelected.minValue = 0
         fragBinding.coinSelected.maxValue = 9
@@ -201,6 +228,7 @@ class AddCoinFragment : Fragment() {
 
         return root;
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

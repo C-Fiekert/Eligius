@@ -58,7 +58,7 @@
             android:id="@+id/valueText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="265dp"
+            android:layout_marginStart="260dp"
             android:layout_marginTop="-5dp"
             android:text="Value"
             android:textColor="@color/white"
@@ -67,14 +67,14 @@
 
         <TextView
             android:id="@+id/valueAmount"
-            android:layout_width="69dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/valueText"
             android:layout_alignStart="@+id/valueText"
             android:layout_alignEnd="@+id/valueText"
-            android:layout_marginStart="-9dp"
+            android:layout_marginStart="-18dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="-9dp"
+            android:layout_marginEnd="-18dp"
             android:text="€0"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -89,7 +89,7 @@
             app:srcCompat="@drawable/circle" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/percentage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/imageView10"
@@ -100,8 +100,9 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="13dp"
-            android:textAlignment="center"
             android:text="+3%"
+            android:textSize="12dp"
+            android:textAlignment="center"
             android:textColor="@color/black" />
 
         <ImageView

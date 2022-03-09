@@ -3,12 +3,15 @@ package com.callum.eligius.fragments
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +25,9 @@ import com.callum.eligius.helpers.SwipeEdit
 import com.callum.eligius.main.Main
 import com.callum.eligius.models.CoinModel
 import com.callum.eligius.models.PortfolioModel
+import com.callum.eligius.models.ResponseModel
+import com.callum.eligius.models.ResponseModelFactory
+import com.callum.eligius.repository.Repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -30,6 +36,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import retrofit2.Response
 import timber.log.Timber
 import java.io.File
 
@@ -39,6 +46,9 @@ class CoinListFragment : Fragment(), CoinListener {
     private var _fragBinding: FragmentCoinListBinding? = null
     private val fragBinding get() = _fragBinding!!
     var coinList: PortfolioModel? = null
+    private val myAdapter by lazy { PortfolioCoinAdapter(coinList?.coins as ArrayList<CoinModel>, null, false, this@CoinListFragment) }
+    private lateinit var responseModel: ResponseModel
+
 
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
@@ -59,15 +69,30 @@ class CoinListFragment : Fragment(), CoinListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _fragBinding = FragmentCoinListBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = "Coins"
         var portfolioName = coinList?.name
         fragBinding.textView3.text = portfolioName + "'s Portfolio"
 
-        fragBinding.recyclerView3.layoutManager = LinearLayoutManager(activity)
-        fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, false, this@CoinListFragment) }
+        prepRecycler()
+
+        val repository = Repository()
+        val responseModelFactory = ResponseModelFactory(repository)
+        responseModel = ViewModelProvider(this, responseModelFactory).get(ResponseModel::class.java)
+        responseModel.getBitcoin("bitcoin,ethereum,binancecoin,cardano,solana,ripple,terra-luna,dogecoin,polkadot,avalanche-2", "eur")
+        responseModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                println(response.body().toString())
+                response.body()?.let { myAdapter.getPrices(it) }
+            } else {
+                Log.d("Main", response.errorBody().toString())
+                Log.d("Main", response.code().toString())
+                println(response.code().toString())
+                println("Failed")
+            }
+        })
+
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
@@ -125,10 +150,14 @@ class CoinListFragment : Fragment(), CoinListener {
         fragBinding.favouritesList.setOnClickListener {
             if (fragBinding.favouritesList.isChecked) {
                 fragBinding.recyclerView3.adapter = null
-                fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, true, this@CoinListFragment) }
+                fragBinding.recyclerView3.adapter = coinList?.let {
+                    PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, true, this@CoinListFragment)
+                }
             } else {
                 fragBinding.recyclerView3.adapter = null
-                fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, false, this@CoinListFragment) }
+                fragBinding.recyclerView3.adapter = coinList?.let {
+                    PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, null, false, this@CoinListFragment)
+                }
             }
         }
 
@@ -141,7 +170,9 @@ class CoinListFragment : Fragment(), CoinListener {
 
             override fun onQueryTextChange(text: String?): Boolean {
                 fragBinding.recyclerView3.adapter = null
-                fragBinding.recyclerView3.adapter = coinList?.let { PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, text, false, this@CoinListFragment) }
+                fragBinding.recyclerView3.adapter = coinList?.let {
+                    PortfolioCoinAdapter(it.coins as ArrayList<CoinModel>, text, false, this@CoinListFragment)
+                }
                 return true
             }
         })
@@ -186,12 +217,15 @@ class CoinListFragment : Fragment(), CoinListener {
         return root;
     }
 
+    private fun prepRecycler() {
+        fragBinding.recyclerView3.adapter = myAdapter
+        fragBinding.recyclerView3.layoutManager = LinearLayoutManager(activity)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
     }
-
 
     companion object {
         @JvmStatic

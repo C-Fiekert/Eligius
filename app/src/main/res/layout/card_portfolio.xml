@@ -28,27 +28,5 @@
             android:textColor="@color/white"
             tools:text="Callums Portfolio" />
 
-        <TextView
-            android:id="@+id/valueText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="280dp"
-            android:layout_marginTop="-5dp"
-            android:textColor="@color/white"
-            android:text="Value"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/valueAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/valueText"
-            android:layout_marginTop="0dp"
-            android:layout_marginStart="280dp"
-            android:textColor="@color/white"
-            android:text="€0"
-            android:textSize="15sp" />
-
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

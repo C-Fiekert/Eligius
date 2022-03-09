@@ -7,10 +7,6 @@ import retrofit2.create
 
 object RetrofitInstance {
 
-    private val client = OkHttpClient.Builder().apply {
-        addInterceptor(Interceptor())
-    }.build()
-
     private val retrofit by lazy {
         Retrofit.Builder().baseUrl("https://api.coingecko.com/api/v3/").addConverterFactory(GsonConverterFactory.create()).build()
     }

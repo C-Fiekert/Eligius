@@ -67,26 +67,6 @@ class AddCoinFragment : Fragment() {
         _fragBinding = FragmentAddCoinBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
-
-        val repository = Repository()
-        val responseModelFactory = ResponseModelFactory(repository)
-        responseModel = ViewModelProvider(this, responseModelFactory).get(ResponseModel::class.java)
-        responseModel.getBitcoin("bitcoin", "usd")
-        responseModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
-            if (response.isSuccessful) {
-                Log.d("Main", response.body().toString())
-                Log.d("Main", response.code().toString())
-                Log.d("Main", response.headers().toString())
-                println(response.code().toString())
-            } else {
-                Log.d("Main", response.errorBody().toString())
-                Log.d("Main", response.code().toString())
-                println(response.code().toString())
-                println("Failed")
-            }
-        })
-
-
         fragBinding.coinSelected.minValue = 0
         fragBinding.coinSelected.maxValue = 9
         fragBinding.coinSelected.displayedValues = com.callum.eligius.helpers.coinList
@@ -97,6 +77,33 @@ class AddCoinFragment : Fragment() {
             fragBinding.addCoin.setImageResource(R.drawable.save)
             edit = true
         }
+
+        var bitcoin = 0.0; var ethereum = 0.0; var binancecoin = 0.0
+        var cardano = 0.0; var solana = 0.0; var ripple = 0.0
+        var terra = 0.0; var dogecoin = 0.0; var polkadot = 0.0; var avalanche = 0.0
+
+        val repository = Repository()
+        val responseModelFactory = ResponseModelFactory(repository)
+        responseModel = ViewModelProvider(this@AddCoinFragment, responseModelFactory).get(ResponseModel::class.java)
+        responseModel.getBitcoin("bitcoin,ethereum,binancecoin,cardano,solana,ripple,terra-luna,dogecoin,polkadot,avalanche-2", "eur")
+        responseModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful && response.body()?.bitcoin?.eur != null) {
+                bitcoin = response.body()?.bitcoin?.eur!!.toDouble()
+                ethereum = response.body()?.ethereum?.eur!!.toDouble()
+                binancecoin = response.body()?.binancecoin?.eur!!.toDouble()
+                cardano = response.body()?.cardano?.eur!!.toDouble()
+                solana = response.body()?.solana?.eur!!.toDouble()
+                ripple = response.body()?.ripple?.eur!!.toDouble()
+                terra = response.body()?.terra?.eur!!.toDouble()
+                dogecoin = response.body()?.dogecoin?.eur!!.toDouble()
+                polkadot = response.body()?.polkadot?.eur!!.toDouble()
+                avalanche = response.body()?.avalanche?.eur!!.toDouble()
+            } else {
+                Log.d("Main", response.errorBody().toString())
+                Log.d("Main", response.code().toString())
+                println("API call failed")
+            }
+        })
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance("https://eligius-29624-default-rtdb.europe-west1.firebasedatabase.app").reference
@@ -184,6 +191,9 @@ class AddCoinFragment : Fragment() {
                             db.child("users").child(user.uid).child("portfolios").child(portfolio?.id.toString()).child("coins").child(it1).child("favourited").setValue(favourited).addOnCompleteListener {
                                 Timber.i("Coin added")
                             }
+                            db.child("users").child(user.uid).child("portfolios").child(portfolio?.id.toString()).child("coins").child(it1).child("value").setValue(favourited).addOnCompleteListener {
+                                Timber.i("Coin added")
+                            }
                         }
 
                         portfolio?.coins?.get(num)?.id?.let { it1 ->
@@ -211,9 +221,22 @@ class AddCoinFragment : Fragment() {
 
             } else {
                 var id = UUID.randomUUID().toString()
-                portfolio?.coins?.add(CoinModel(id, coinSelected, coinAmount, 0, favourited))
-                db.child("users").child(user.uid).child("portfolios").child(portfolio?.id.toString()).child("coins").child(id).setValue(CoinModel(id, coinSelected, coinAmount, 0, favourited)).addOnCompleteListener { Timber.i("Coin added") }
-                db.child("portfolios").child(portfolio!!.id).child("coins").child(id).setValue(CoinModel(id, coinSelected, coinAmount, 0, favourited)).addOnCompleteListener { Timber.i("Coin added") }
+
+                var currentPrice = 0.0
+                if (coinSelected == 0) { currentPrice = bitcoin }
+                else if (coinSelected == 1) { currentPrice = ethereum }
+                else if (coinSelected == 2) { currentPrice = binancecoin }
+                else if (coinSelected == 3) { currentPrice = cardano }
+                else if (coinSelected == 4) { currentPrice = solana }
+                else if (coinSelected == 5) { currentPrice = ripple }
+                else if (coinSelected == 6) { currentPrice = terra }
+                else if (coinSelected == 7) { currentPrice = dogecoin }
+                else if (coinSelected == 8) { currentPrice = polkadot }
+                else if (coinSelected == 9) { currentPrice = avalanche }
+
+                portfolio?.coins?.add(CoinModel(id, coinSelected, coinAmount, currentPrice, favourited))
+                db.child("users").child(user.uid).child("portfolios").child(portfolio?.id.toString()).child("coins").child(id).setValue(CoinModel(id, coinSelected, coinAmount, currentPrice, favourited)).addOnCompleteListener { Timber.i("Coin added") }
+                db.child("portfolios").child(portfolio!!.id).child("coins").child(id).setValue(CoinModel(id, coinSelected, coinAmount, currentPrice, favourited)).addOnCompleteListener { Timber.i("Coin added") }
 
                 val transaction = manager.beginTransaction()
                 transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)

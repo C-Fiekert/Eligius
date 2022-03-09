@@ -30,7 +30,7 @@ class PortfolioMemStore : PortfolioStore {
 
                 if (it.child("coins").exists()) {
                     it.child("coins").children.forEach {
-                        coins.add(CoinModel(it.child("id").value.toString(), it.child("name").value.toString().toInt(), it.child("amount").value.toString(), 0, it.child("favourited").value as Boolean))
+                        coins.add(CoinModel(it.child("id").value.toString(), it.child("name").value.toString().toInt(), it.child("amount").value.toString(), it.child("value").value.toString().toDouble(), it.child("favourited").value as Boolean))
                     }
                 }
                 if (findOne(portfolios, id) == null) {

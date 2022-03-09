@@ -55,7 +55,6 @@ class PortfolioAdapter constructor(private var portfolios: List<PortfolioModel>,
 
         fun bind(portfolio: PortfolioModel, listener: PortfolioListener) {
             binding.portfolioName.text = portfolio.name + "'s Portfolio"
-            binding.valueAmount.text = "€" + portfolio.value.toString()
 
             binding.root.setOnClickListener { listener.onPortfolioClick(portfolio) }
         }
